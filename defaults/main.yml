@@ -1,0 +1,23 @@
+---
+# Ghost settings
+conan_domain: 'conan.status.im'
+conan_cont_image: 'statusteam/conan:latest'
+conan_cont_name: 'conan-server'
+conan_cont_port: 9300
+conan_cont_workers: 4
+conan_cont_timeout: 300
+conan_cont_vol: '/docker/{{ conan_cont_name }}'
+conan_max_upload: 800m
+# container specific settings
+conan_cont_home: '/root/.conan_server'
+
+conan_users:
+  - name: admin
+    pass: '{{lookup("passwordstore", "services/conan/admin-pass")}}'
+    write: true
+  - name: status
+    pass: '{{lookup("passwordstore", "services/conan/status-pass")}}'
+    write: true
+  - name: test
+    pass: test
+    write: false

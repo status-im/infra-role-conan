@@ -1,0 +1,15 @@
+---
+- name: Consul service definition
+  include_role: name=consul-service
+  vars:
+    consul_config_name: '{{ conan_cont_name }}'
+    consul_services:
+      - id: '{{ conan_cont_name }}'
+        name: '{{ conan_cont_name }}'
+        port: '{{ conan_cont_port }}'
+        address: 'localhost'
+        tags: ['{{ env }}.{{ stage }}', 'conan', 'repo']
+        checks:
+          - id: '{{ conan_cont_name }}-health'
+            type: http
+            http: 'http://localhost:{{ conan_cont_port }}/v2/ping'

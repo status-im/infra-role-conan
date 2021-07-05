@@ -1,0 +1,6 @@
+---
+- name: Save iptables rules
+  shell: iptables-save > /etc/iptables/rules.v4
+
+- name: reload nginx
+  service: name=nginx state=reloaded

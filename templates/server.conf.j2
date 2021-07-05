@@ -1,0 +1,30 @@
+[server]
+updown_secret: {{lookup("passwordstore", "services/conan/updown-secret")}}
+jwt_secret: {{lookup("passwordstore", "services/conan/jwt-secret")}}
+jwt_expire_minutes: 120
+
+authorize_timeout: 1800
+
+# This affects actual listen port
+port: {{ conan_cont_port }}
+# These 3 affect how server advertises itself publicly
+ssl_enabled: True
+public_port: 443
+host_name: {{ conan_domain }}
+
+store_adapter: disk
+# Just for disk storage adapter
+disk_storage_path: {{ conan_cont_home }}/data
+disk_authorize_timeout: 1800
+
+[read_permissions]
+# By default all users can read all blocks
+*/*@*/*: *
+
+[write_permissions]
+*/*@*/*: {{ conan_users | selectattr("write", "equalto", True) | map(attribute="name") | join(",") }}
+
+[users]
+{% for user in conan_users %}
+{{ user.name }}: {{ user.pass }}
+{% endfor %}

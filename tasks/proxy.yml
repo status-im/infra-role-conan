@@ -1,0 +1,13 @@
+---
+- name: 'Template Ghost proxy config: {{ conan_cont_name }}'
+  template:
+    src: conan-proxy.conf.j2
+    dest: '/etc/nginx/sites-available/{{ conan_cont_name }}.conf'
+  notify: reload nginx
+
+- name: 'Symlink Ghost proxy config: {{ conan_cont_name }}'
+  file:
+    src: '/etc/nginx/sites-available/{{ conan_cont_name }}.conf'
+    dest: '/etc/nginx/sites-enabled/{{ conan_cont_name }}.conf'
+    state: link
+  notify: reload nginx

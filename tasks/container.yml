@@ -1,0 +1,19 @@
+---
+- name: 'Start container: {{ conan_cont_name }}'
+  docker_container:
+    name: '{{ conan_cont_name }}'
+    image: '{{ conan_cont_image }}'
+    pull: true
+    restart_policy: always
+    state: '{{ cont_state }}'
+    recreate: '{{ cont_recreate }}'
+    restart: '{{ config.changed | default(cont_restart) }}'
+    ports:
+      - '{{ conan_cont_port }}:{{ conan_cont_port }}'
+    env:
+      CONAN_PORT: '{{ conan_cont_port | string }}'
+      CONAN_WORKERS: '{{ conan_cont_workers | string }}'
+      CONAN_TIMEOUT: '{{ conan_cont_timeout | string }}'
+    volumes:
+      - '{{ conan_cont_vol }}/data:{{ conan_cont_home }}/data'
+      - '{{ conan_cont_vol }}/conf/server.conf:{{ conan_cont_home }}/server.conf'

@@ -1,0 +1,14 @@
+---
+- name: 'Enable {{ conan_cont_name }}'
+  iptables:
+    comment: '{{ conan_cont_name }}'
+    chain: INPUT
+    jump: ACCEPT
+    source: '0.0.0.0/0'
+    protocol: 'tcp'
+    destination_port: '{{ item }}'
+  with_items:
+    - 80
+    - 443
+  notify:
+    - Save iptables rules

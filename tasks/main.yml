@@ -1,0 +1,6 @@
+---
+- include_tasks: config.yml
+- include_tasks: container.yml
+- include_tasks: consul.yml
+- include_tasks: proxy.yml
+- include_tasks: firewall.yml

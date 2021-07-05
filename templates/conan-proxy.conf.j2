@@ -1,0 +1,24 @@
+server {
+    listen 80;
+    server_name {{ conan_domain }};
+    return 302 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+
+    server_name {{ conan_domain }};
+
+    ssl_certificate     /certs/origin.crt;
+    ssl_certificate_key /certs/origin.key;
+
+    client_max_body_size {{ conan_max_upload }};
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass http://127.0.0.1:{{ conan_cont_port }}/;
+    }
+}

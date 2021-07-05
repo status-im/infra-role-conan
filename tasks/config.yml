@@ -1,0 +1,17 @@
+---
+- name: 'Create directories for {{ conan_cont_name }}'
+  file:
+    path: '{{ conan_cont_vol }}/{{ item }}'
+    state: directory
+    owner: 'dockremap'
+    recurse: true
+  with_items:
+    - 'conf'
+    - 'data'
+
+- name: 'Generate the {{ conan_cont_name }} config'
+  template:
+    src: server.conf.j2
+    dest: '{{ conan_cont_vol }}/conf/server.conf'
+    owner: 'dockremap'
+  register: config
